@@ -100,13 +100,14 @@ int main() {
             segment.push_back(x);
         segments.push_back(segment);
 
-        find_segment(i - 1);
+        find_segment(i);
     };
     find_segment(n - 1);
 
     cout << "Minimun cost of making segments = " << opt[n - 1] << endl; 
     cout << "Number of segments = " << segments.size() << endl;
     for (auto &v : segments) {
+        // Prints id of points in segment (0 indexed)
         cout << "New segment start: ";
         for (int i : v)
             cout << i << ' ';
