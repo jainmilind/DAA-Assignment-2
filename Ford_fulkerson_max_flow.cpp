@@ -8,30 +8,7 @@ template <typename T, typename... U> void debug_out(string s, T t, U... u) { int
 
 // TODO: Apply `Choosing Good Augmenting Paths` its very trivial to add so i am not doing
 
-int main() {
-    // number of vertices
-    int n; cin >> n;
-    // number of edges
-    int m; cin >> m;
-    cout << n << ' ' << m << endl;
-    // using adjanceny matrix as mentioned in slides
-    vector<vector<int>> adj(n, vector<int>(n));
-    vector<array<int, 2>> edges(m);
-    map<array<int, 2>, int> edg_to_i;
-    for (int i = 0; i < m; ++i) {
-        int x, y, c; cin >> x >> y >> c;
-        x--, y--;
-        adj[x][y] = c;
-        edges.push_back({ x, y });
-        edg_to_i[{x, y}] = i;
-    }
-
-    // start end of ford fulkerson
-    int start, end;
-    cin >> start >> end;
-    // as 0 indexed
-    start--, end--;
-
+vector<vector<int>> ford_fulkerson(int start, int end, int n, int m, vector<vector<int>>& adj, map<array<int, 2>, int>& edg_to_i) {
     // initial same 
     auto res_adj = adj;
 
@@ -100,6 +77,59 @@ int main() {
         // f and res_adj is updated inside it
         augment(f, path, res_adj);
     }
+    return res_adj;
+}
+
+// ! remove the link later
+// https://www.geeksforgeeks.org/minimum-cut-in-a-directed-graph/
+// TODO: test this code 
+// iska solution slides me nahi tha
+vector<array<int, 2>> minimum_cut(int start, int end, int n, int m, vector<vector<int>>& res_adj, vector<vector<int>>& adj) {
+    vector<array<int, 2>> mincut;
+
+    vector<bool> vis(n);
+    function<void(int)> dfs = [&](int u) {
+        vis[u] = 1;
+        for (int i = 0; i < n; ++i) {
+            if (!vis[i] and res_adj[u][i]) {
+                dfs(i);
+            }
+        }
+    };
+    dfs(start);
+
+
+    for (int i = 0; i < n; ++i)
+        for (int j = 0; j < n; ++j)
+            if (vis[i] and !vis[j] and adj[i][j]) 
+                mincut.push_back({i, j});
+    
+    return mincut;
+}
+
+int main() {
+    // number of vertices
+    int n; cin >> n;
+    // number of edges
+    int m; cin >> m;
+    cout << n << ' ' << m << endl;
+    // using adjanceny matrix as mentioned in slides
+    vector<vector<int>> adj(n, vector<int>(n));
+    map<array<int, 2>, int> edg_to_i;
+    for (int i = 0; i < m; ++i) {
+        int x, y, c; cin >> x >> y >> c;
+        x--, y--;
+        adj[x][y] = c;
+        edg_to_i[{x, y}] = i;
+    }
+
+    // start end of ford fulkerson
+    int start, end;
+    cin >> start >> end;
+    // as 0 indexed
+    start--, end--;
+
+    auto res_adj = ford_fulkerson(start, end, n, m, adj, edg_to_i);
 
     for (int i = 0; i < n; ++i)
         for (int j = 0; j < n; ++j)
@@ -110,4 +140,10 @@ int main() {
         for (int j = 0; j < n; ++j)
             if (res_adj[i][j])
                 cout << i + 1 << ' ' << j + 1 << ' ' << res_adj[i][j] << endl;
+
+
+    // minimum cut
+    auto min_cut = minimum_cut(start, end, n, m, res_adj, adj);
+
+    
 }
