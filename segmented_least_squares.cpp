@@ -2,6 +2,7 @@
 using namespace std;
 
 const int64_t inf = LLONG_MAX;
+
 int main() {
     // this is number of points
     int n; cin >> n;
