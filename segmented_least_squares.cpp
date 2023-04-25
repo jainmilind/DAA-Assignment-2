@@ -1,7 +1,8 @@
 #include <bits/stdc++.h>
+#include <numeric>
 using namespace std;
 
-const int64_t inf = LLONG_MAX;
+const int64_t inf = 1e10;
 
 // Function to recursively find the best set of segments
 void find_segment(int j, vector<vector<int>> &segments, vector<int> &best_seg)
@@ -76,13 +77,14 @@ int main()
             if (den == 0)
             {
                 slope[i][j] = inf;
+                intercept[i][j] = -(double)range_x / seg_len;
             }
             else
             {
                 slope[i][j] = (double)num / den;
+                intercept[i][j] = (double)(range_y - slope[i][j] * range_x) / seg_len;
             }
             // Calculating the intecept
-            intercept[i][j] = (double)(range_y - slope[i][j] * range_x) / seg_len;
 
             // Adding errors for all points [i, j] for given line in e[i][j]
             for (int k = i; k <= j; ++k)
@@ -90,9 +92,10 @@ int main()
                 // Error = y - mx - c
                 double x = points[k][0];
                 double y = points[k][1];
-                double m = slope[i][j];
+                double coef_x = slope[i][j] == inf ? 1 : slope[i][j];
+                double coef_y = slope[i][j] == inf ? 0 : -1;
                 double c = intercept[i][j];
-                double cur_error = y - m * x - c;
+                double cur_error =  - coef_y * y + coef_x * x + c;
                 e[i][j] += cur_error * cur_error;
             }
         }
@@ -114,6 +117,7 @@ int main()
                 best_seg[j] = i;
             }
         }
+
     }
 
     // Recovering segments using OPT
@@ -126,9 +130,22 @@ int main()
     for (auto &v : segments)
     {
         // Prints id of points in segment (0 indexed)
-        cout << "New segment start: ";
-        for (int i : v)
-            cout << i << ' ';
-        cout << endl;
+        int i = v.front(), j = v.back();
+
+        if(slope[i][j] == inf){
+            double line_x = -intercept[i][j];
+            cout << line_x << ' ' << points[i][1] << ' ' << line_x << ' ' << points[j][1] << endl;
+            continue;
+        }
+
+        double line_x1 = points[i][0], line_x2 = points[j][0];
+        double line_y1 = slope[i][j] * line_x1 + intercept[i][j];
+        double line_y2 = slope[i][j] * line_x2 + intercept[i][j];
+
+        cout << line_x1 << ' ' << line_y1 << ' ' << line_x2 << ' ' << line_y2 << endl;
     }
+
+
 }
+
+
