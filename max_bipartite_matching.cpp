@@ -1,94 +1,7 @@
 // #include "./Ford_fulkerson_max_flow.cpp"
-#include <bits/stdc++.h>
+#include "Ford_fulkerson_max_flow.cpp"
 
 using namespace std;
-
-// Remove later
-vector<vector<int>> ford_fulkerson(int start, int end, int n, int m, vector<vector<int>>& adj, map<array<int, 2>, int>& edg_to_i) {
-    // initial same 
-    auto res_adj = adj;
-
-    // as in slides
-    vector<int> f(m);
-
-    auto get_path = [&](int start, int end, vector<vector<int>>& res_adj, int del) {
-        vector<bool> vis(n);
-        vis[start] = 1;
-        queue<int> q;
-        q.push(start);
-        vector<int> par(n, -1);
-
-        while (q.size()) {
-            int u = q.front();
-            q.pop();
-
-            for (int i = 0; i < n; ++i) {
-                if (!vis[i] and res_adj[u][i] and res_adj[u][i] >= del) {
-                    par[i] = u;
-                    vis[i] = 1;
-                    q.push(i);
-                }
-            }
-        }
-
-        vector<int> path;
-        if (par[end] == -1)
-            return path;
-        while (end != -1) {
-            path.push_back(end);
-            end = par[end];
-        }
-        reverse(path.begin(), path.end());
-        return path;
-    };
-
-
-    auto augment = [&](vector<int>& f, vector<int>& path, vector<vector<int>>& res_adj) {
-        int bottle_neck = INT_MAX;
-        for (int i = 1; i < (int)path.size(); ++i) {
-            bottle_neck = min(bottle_neck, res_adj[path[i - 1]][path[i]]);
-        }
-
-        // dbg(bottle_neck);
-        for (int i = 1; i < (int)path.size(); ++i) {
-            res_adj[path[i - 1]][path[i]] -= bottle_neck;
-            res_adj[path[i]][path[i - 1]] += bottle_neck;
-            if (edg_to_i.count({ path[i - 1], path[i] })) {
-                int edg = edg_to_i[{path[i - 1], path[i]}];
-                // check if forward or backward edge
-                f[edg] -= bottle_neck;
-            }
-            if (edg_to_i.count({ path[i], path[i - 1] })) {
-                int edg = edg_to_i[{path[i], path[i - 1]}];
-                // check if forward or backward edge
-                f[edg] += bottle_neck;
-            }
-        }
-    };
-
-    int mx_cap = 0;
-    for(int i = 0; i < n; i++){
-        for(int j = 0; j < n; j++){
-            mx_cap = max(mx_cap, adj[i][j]);
-        }
-    }
-
-    int del = 1 << (int)floor(log2(mx_cap));
-
-    while(del >= 1){
-        while (true) {
-            auto path = get_path(start, end, res_adj, del);
-            // dbg(path);
-            if (path.size() == 0)
-                break;
-
-            // f and res_adj is updated inside it
-            augment(f, path, res_adj);
-        }
-        del /= 2;
-    }
-    return res_adj;
-}
 
 int main(){
 
@@ -100,9 +13,11 @@ int main(){
     int n, m, bi_index;
     cin >> n >> m >> bi_index;
 
+    // Adjaceny matrix of the bipartite graph
     vector<vector<int>> adj(n+2, vector<int>(n+2, 0));
 
     int cnt = 0;
+    // etoi maps every edge to an integer
     map<array<int, 2>, int> etoi;
 
     for(int i = 0; i < m; i++){
@@ -113,19 +28,25 @@ int main(){
         etoi[{u,v}] = cnt++;
     }
 
+    // Adding edges from source to left bipartite set
     for(int i = 1; i <= bi_index; i++){
         adj[0][i] = 1;
         etoi[{0,i}] = cnt++;
     }
 
+    // Adding edges from right bipartite set to sink
     for(int i = bi_index + 1; i <= n + 1; i++){
         adj[i][n+1] = 1;
         etoi[{i,n+1}] = cnt++;
     }
 
+    // Applying ford fulkerson algorightm to get residual adjacency matrix.
     auto res_adj = ford_fulkerson(0, n+1, n+2, m+n, adj, etoi);
 
+    // Stores all the edges of the maximum matching
     vector<pair<int, int>> max_matching;
+
+    // Find the edges of the maximum matching by checking if the flow of the edge is 1
     for(int i = 1; i <= bi_index; i++){
         for(int j = bi_index + 1; j <= n; j++){
             if(adj[i][j] && !res_adj[i][j])
