@@ -2,7 +2,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-// Function to get a path with a value of delta
+/**
+ * Function to get a path with a source vertex, sink vertex and a value of delta
+ * @param start This is the start vertex from where we need to find a path.
+ * @param end This is the end vertex to where we need to find a path.
+ * @param res_adj This is the adjacency matrix for the Residual Graph.
+ * @param del This is delta value to ensure we get the augmented path.
+ * @return It returns the path with the given values of source vertex, sink vertex and delta
+ */
 vector<int> get_path(int start, int end, vector<vector<int>> &res_adj, int del)
 {
     int n = res_adj.size();
@@ -45,7 +52,13 @@ vector<int> get_path(int start, int end, vector<vector<int>> &res_adj, int del)
     return path;
 };
 
-// Function to update the residual graph with the bottle neck
+/**
+ * Function to update the residual graph along the path with the bottle neck
+ * @param f This is array of flows in each edge
+ * @param path This is the augmented path for which we have to update the flow.
+ * @param res_adj This is the adjacency matrix for the Residual Graph.
+ * @param edg_to_i This is a map which assigns each edge a value to easier access.
+ */
 void augment(vector<int> &f, vector<int> &path, vector<vector<int>> &res_adj, map<array<int, 2>, int> &edg_to_i)
 {
     // Initializing the bottle neck to the max value
@@ -77,7 +90,16 @@ void augment(vector<int> &f, vector<int> &path, vector<vector<int>> &res_adj, ma
     }
 };
 
-// Function to run Ford Fulkerson algorithm
+/**
+ * Function to run Ford Fulkerson algorithm
+ * @param start This is the start vertex for the graph on which we have to run Ford Fulkerson algorithm.
+ * @param end This is the end vertex for the graph on which we have to run Ford Fulkerson algorithm.
+ * @param n This is the number of vertices.
+ * @param m This is the number of edges.
+ * @param adj This is the adjacency matrix for the Graph.
+ * @param edg_to_i This is a map which assigns each edge a value to easier access.
+ * @return It returns the adjacency matrix for the final Graph.
+ */
 vector<vector<int>> ford_fulkerson(int start, int end, int n, int m, vector<vector<int>> &adj, map<array<int, 2>, int> &edg_to_i)
 {
     // Residual graph which is same as present graph initially
@@ -114,7 +136,12 @@ vector<vector<int>> ford_fulkerson(int start, int end, int n, int m, vector<vect
     return res_adj;
 }
 
-// Function to check whether a vertex can be visited from source vertex or not
+/**
+ * Function to get all the vertices that can be visited from source vertex
+ * @param u This is the source vertex .
+ * @param vis This is the vector to keep track of all the visited vertices.
+ * @param res_adj This is the adjacency matrix for the final Graph.
+ */
 void reach_from_source(int u, vector<bool> &vis, vector<vector<int>> &res_adj)
 {
     int n = vis.size();
@@ -130,7 +157,16 @@ void reach_from_source(int u, vector<bool> &vis, vector<vector<int>> &res_adj)
     }
 }
 
-// Function to find the edges that comprise the minimum cut
+/**
+ * Function to find the edges that comprise the minimum cut.
+ * @param start This is the start vertex for the graph on which we have to run Ford Fulkerson algorithm.
+ * @param end This is the end vertex for the graph on which we have to run Ford Fulkerson algorithm.
+ * @param n This is the number of vertices.
+ * @param m This is the number of edges.
+ * @param res_adj This is the adjacency matrix for the Residual Graph.
+ * @param adj This is the adjacency matrix for the Graph.
+ * @return It returns the edges that comprise the minimum cut.
+ */
 vector<array<int, 2>> minimum_cut(int start, int end, int n, int m, vector<vector<int>> &res_adj, vector<vector<int>> &adj)
 {
     vector<array<int, 2>> mincut;
@@ -146,4 +182,3 @@ vector<array<int, 2>> minimum_cut(int start, int end, int n, int m, vector<vecto
 
     return mincut;
 }
-
