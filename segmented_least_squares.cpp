@@ -3,11 +3,15 @@
 using namespace std;
 
 const int64_t inf = 1e10;
-
-// Function to recursively find the best set of segments
+/**
+ * Function to recursively find the best set of segments
+ * @param j This is the index of the last point for which segements are need to be found.
+ * @param segments This stores all the segments
+ * @param best_seg This stores the starting index of the point which gives the least penalty ending at every point
+ */
 void find_segment(int j, vector<vector<int>> &segments, vector<int> &best_seg)
 {
-    
+
     if (j == 0)
         return;
 
@@ -17,12 +21,14 @@ void find_segment(int j, vector<vector<int>> &segments, vector<int> &best_seg)
         segment.push_back(x);
     segments.push_back(segment);
 
-    find_segment(i,segments,best_seg);
+    find_segment(i, segments, best_seg);
 };
-
+/**
+ * In main first we find the slope between every points and their corresponding intercepts and store them in slope and intercept vectors. Then we find the error between every two points and store them in e. Then we use opt to store minimum penalty such that opt[j] stores the errors till jth point. Then we best_seg which contains the starting index of where the index came from. Then we use segments to store all the segments.
+ */
 int main()
 {
-    // this is number of points
+    // This is number of points
     int n;
     cin >> n;
     vector<array<int64_t, 2>> points(n);
@@ -35,7 +41,8 @@ int main()
 
     // Sorting the points in ascending order
     sort(points.begin(), points.end());
-
+    // Start of timer
+    auto startSegmented = std::chrono::high_resolution_clock::now();
     // Prefix sum for x, y, x*y, x*x coordinates (0 indexed) used for finding m and c of lines
     vector<int64_t> pre_x(n), pre_y(n), pre_xy(n), pre_xx(n);
     pre_x[0] = points[0][0];
@@ -73,7 +80,7 @@ int main()
             // Finding the numerator and denominator for calculating the slope
             int64_t num = seg_len * range_xy - range_x * range_y;
             int64_t den = seg_len * range_xx - range_x * range_x;
-
+            // Calculating the slope and the intecept
             if (den == 0)
             {
                 slope[i][j] = inf;
@@ -84,18 +91,16 @@ int main()
                 slope[i][j] = (double)num / den;
                 intercept[i][j] = (double)(range_y - slope[i][j] * range_x) / seg_len;
             }
-            // Calculating the intecept
 
             // Adding errors for all points [i, j] for given line in e[i][j]
             for (int k = i; k <= j; ++k)
             {
-                // Error = y - mx - c
                 double x = points[k][0];
                 double y = points[k][1];
                 double coef_x = slope[i][j] == inf ? 1 : slope[i][j];
                 double coef_y = slope[i][j] == inf ? 0 : -1;
                 double c = intercept[i][j];
-                double cur_error =  - coef_y * y + coef_x * x + c;
+                double cur_error = -coef_y * y + coef_x * x + c;
                 e[i][j] += cur_error * cur_error;
             }
         }
@@ -117,22 +122,26 @@ int main()
                 best_seg[j] = i;
             }
         }
-
     }
 
     // Recovering segments using OPT
     vector<vector<int>> segments;
 
-    find_segment(n - 1, segments,best_seg);
+    find_segment(n - 1, segments, best_seg);
+    // End of timer
+    auto stopSegmented = std::chrono::high_resolution_clock::now();
+    auto segmentedTime = std::chrono::duration_cast<std::chrono::microseconds>(stopSegmented - startSegmented);
+    cerr << setprecision(15) << "Time for decomposing is: " << (double)segmentedTime.count() / 1000 << " ms" << endl;
 
-    cout << "Minimun cost of making segments = " << opt[n - 1] << endl;
+    cout << "Minimun cost = " << opt[n - 1] << endl;
     cout << "Number of segments = " << segments.size() << endl;
     for (auto &v : segments)
     {
         // Prints id of points in segment (0 indexed)
         int i = v.front(), j = v.back();
 
-        if(slope[i][j] == inf){
+        if (slope[i][j] == inf)
+        {
             double line_x = -intercept[i][j];
             cout << line_x << ' ' << points[i][1] << ' ' << line_x << ' ' << points[j][1] << endl;
             continue;
@@ -144,8 +153,4 @@ int main()
 
         cout << line_x1 << ' ' << line_y1 << ' ' << line_x2 << ' ' << line_y2 << endl;
     }
-
-
 }
-
-
