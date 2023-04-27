@@ -61,7 +61,7 @@ int main()
     // End of timer
     auto stopMatching = std::chrono::high_resolution_clock::now();
     auto matchingTime = std::chrono::duration_cast<std::chrono::microseconds>(stopMatching - startMatching);
-    cerr << setprecision(15) << "Time for decomposing is: " << (double)matchingTime.count() / 1000 << " ms" << endl;
+    cerr << setprecision(15) << "Time for solving Bipartite Matching is: " << (double)matchingTime.count() / 1000 << " ms" << endl;
     cout << max_matching.size() << endl;
 
     for (auto edge : max_matching)

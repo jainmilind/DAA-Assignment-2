@@ -39,7 +39,7 @@ int main()
     auto res_adj = ford_fulkerson(start, end, n, m, adj, edg_to_i);
     auto stopFord = std::chrono::high_resolution_clock::now();
     auto fordTime = std::chrono::duration_cast<std::chrono::microseconds>(stopFord - startFord);
-    cerr << setprecision(15) << "Time for decomposing is: " << (double)fordTime.count() / 1000 << " ms" << endl;
+    cerr << setprecision(15) << "Time for running Ford Fulkerson is: " << (double)fordTime.count() / 1000 << " ms" << endl;
 
     int max_flow = 0;
     for (int i = 0; i < n; i++)
