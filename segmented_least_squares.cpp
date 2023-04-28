@@ -131,7 +131,7 @@ int main()
     // End of timer
     auto stopSegmented = std::chrono::high_resolution_clock::now();
     auto segmentedTime = std::chrono::duration_cast<std::chrono::microseconds>(stopSegmented - startSegmented);
-    cerr << setprecision(15) << "Time for decomposing is: " << (double)segmentedTime.count() / 1000 << " ms" << endl;
+    cerr << setprecision(15) << "Time for getting best segments is: " << (double)segmentedTime.count() / 1000 << " ms" << endl;
 
     cout << "Minimun cost = " << opt[n - 1] << endl;
     cout << "Number of segments = " << segments.size() << endl;
