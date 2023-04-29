@@ -1,14 +1,12 @@
-import random
+from random import randint
 import sys
 n = int(sys.argv[1])
-m = int(sys.argv[2])
+x = randint(-1e3, 1e3)
+y = randint(-1e3, 1e3)
 print(n)
-arr1 = []
 for i in range(n):
-    arr2 = []
-    arr2.append(random.randint(-m,m))
-    arr2.append(random.randint(-m,m))
-    arr1.append(arr2)
-for x in arr1:
-    print(*x)
-print(m//3)
+    print(x, y)
+    y += randint(-1e1, 1e1)
+    x += randint(1, 1e1)
+# this is Cost
+print(sys.argv[2])

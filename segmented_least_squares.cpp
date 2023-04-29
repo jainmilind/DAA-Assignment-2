@@ -2,7 +2,7 @@
 #include <numeric>
 using namespace std;
 
-const int64_t inf = 1e10;
+const long double inf = 1e25;
 /**
  * Function to recursively find the best set of segments
  * @param j This is the index of the last point for which segements are need to be found.
@@ -12,7 +12,7 @@ const int64_t inf = 1e10;
 void find_segment(int j, vector<vector<int>> &segments, vector<int> &best_seg)
 {
 
-    if (j == 0)
+    if (j <= 0)
         return;
 
     int i = best_seg[j];
@@ -21,7 +21,7 @@ void find_segment(int j, vector<vector<int>> &segments, vector<int> &best_seg)
         segment.push_back(x);
     segments.push_back(segment);
 
-    find_segment(i, segments, best_seg);
+    find_segment(i - 1, segments, best_seg);
 };
 /**
  * In main first we find the slope between every points and their corresponding intercepts and store them in slope and intercept vectors. Then we find the error between every two points and store them in e. Then we use opt to store minimum penalty such that opt[j] stores the errors till jth point. Then we best_seg which contains the starting index of where the index came from. Then we use segments to store all the segments.
@@ -31,9 +31,12 @@ int main()
     // This is number of points
     int n;
     cin >> n;
+    cout << n << endl;
     vector<array<int64_t, 2>> points(n);
-    for (auto &x : points)
+    for (auto &x : points){
         cin >> x[0] >> x[1];
+        cout << x[0] << " " << x[1] << endl;
+    }
 
     // Cost of creating a new segment
     int64_t C;
@@ -81,26 +84,36 @@ int main()
             int64_t num = seg_len * range_xy - range_x * range_y;
             int64_t den = seg_len * range_xx - range_x * range_x;
             // Calculating the slope and the intecept
-            if (den == 0)
-            {
-                slope[i][j] = inf;
-                intercept[i][j] = -(double)range_x / seg_len;
-            }
-            else
-            {
-                slope[i][j] = (double)num / den;
-                intercept[i][j] = (double)(range_y - slope[i][j] * range_x) / seg_len;
-            }
+            // if (den == 0)
+            // {
+            //     slope[i][j] = inf;
+            //     intercept[i][j] = -(double)range_x / (double)seg_len;
+            // }
+            // else
+            // {
+                slope[i][j] = (double)num / (double)den;
+                intercept[i][j] = (double)(range_y - slope[i][j] * range_x) / (double)seg_len;
+            // }
 
+            // for (int k = i; k <= j; ++k)
+            // {
+            //     double x = points[k][0];
+            //     double y = points[k][1];
+            //     double coef_x = slope[i][j] == inf ? 1 : slope[i][j];
+            //     double coef_y = slope[i][j] == inf ? 0 : -1;
+            //     double c = intercept[i][j];
+            //     double cur_error = -coef_y * y + coef_x * x + c;
+            //     e[i][j] += cur_error * cur_error;
+            // }
+            
             // Adding errors for all points [i, j] for given line in e[i][j]
-            for (int k = i; k <= j; ++k)
-            {
+            for (int k = i; k <= j; ++k) {
+                // Error = y - mx - c
                 double x = points[k][0];
                 double y = points[k][1];
-                double coef_x = slope[i][j] == inf ? 1 : slope[i][j];
-                double coef_y = slope[i][j] == inf ? 0 : -1;
+                double m = slope[i][j];
                 double c = intercept[i][j];
-                double cur_error = -coef_y * y + coef_x * x + c;
+                double cur_error = y - m * x - c;
                 e[i][j] += cur_error * cur_error;
             }
         }
@@ -110,7 +123,7 @@ int main()
     vector<double> opt(n, inf);
 
     // best_seg[i] = where this segment came from.
-    vector<int> best_seg(n, -1);
+    vector<int> best_seg(n, 0);
     for (int j = 0; j < n; ++j)
     {
         for (int i = 0; i < j; ++i)
@@ -133,8 +146,10 @@ int main()
     auto segmentedTime = std::chrono::duration_cast<std::chrono::microseconds>(stopSegmented - startSegmented);
     cerr << setprecision(15) << "Time for getting best segments is: " << (double)segmentedTime.count() / 1000 << " ms" << endl;
 
-    cout << "Minimun cost = " << opt[n - 1] << endl;
-    cout << "Number of segments = " << segments.size() << endl;
+    cerr << "Minimun cost = " << opt[n - 1] << endl;
+    cerr << "Number of segments = " << segments.size() << endl;
+    cout << segments.size() << endl;
+
     for (auto &v : segments)
     {
         // Prints id of points in segment (0 indexed)

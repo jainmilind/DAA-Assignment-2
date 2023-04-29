@@ -1,15 +1,35 @@
 #include "Ford_fulkerson_max_flow.cpp"
+#include <cstdlib>
 
 using namespace std;
+
+// Checks if the graph is bipartite, if it is it removes the 
+void graph_2_col(int u, vector<vector<int>>& adj, vector<int>& col){
+
+    for(int v = 1; v < adj[u].size(); v++){
+        if(adj[u][v] && !col[v]){
+            adj[u][v] = col[u] == 1;
+            adj[v][u] = col[u] == 2;
+            col[v] = 3 ^ col[u];
+            graph_2_col(v, adj, col);
+        }
+        else if(adj[u][v] && col[u] == col[v]){
+            cerr << "Graph is not bipartite\n";
+            exit(EXIT_FAILURE);
+        }
+    }
+
+    return;
+}
 
 /**
  * Function to run the Ford Fulkerson and use it to solve the Bipartite Matching Problem
  */
 int main()
 {
-    // Input Format - Total number of nodes (n), number of edges (m), Number of nodes in the left bipartite set (bi_index)
-    int n, m, bi_index;
-    cin >> n >> m >> bi_index;
+
+    int n, m;
+    cin >> n >> m;
 
     // Adjaceny matrix of the bipartite graph
     vector<vector<int>> adj(n + 2, vector<int>(n + 2, 0));
@@ -23,24 +43,32 @@ int main()
     {
         int u, v;
         cin >> u >> v;
-        assert(u <= bi_index && v > bi_index);
+        // assert(u <= bi_index && v > bi_index);
         adj[u][v] = 1;
+        adj[v][u] = 1;
         etoi[{u, v}] = cnt++;
     }
+
+    vector<int> col(n+1, 0);
+    
+    for(int i = 1; i <= n; i++){
+        if(!col[i]){
+            col[i] = 1;
+            graph_2_col(i, adj, col);
+        }
+    }
+    
     // Start of timer
     auto startMatching = std::chrono::high_resolution_clock::now();
-    // Adding edges from source to left bipartite set
-    for (int i = 1; i <= bi_index; i++)
-    {
-        adj[0][i] = 1;
-        etoi[{0, i}] = cnt++;
-    }
-
-    // Adding edges from right bipartite set to sink
-    for (int i = bi_index + 1; i <= n + 1; i++)
-    {
-        adj[i][n + 1] = 1;
-        etoi[{i, n + 1}] = cnt++;
+    
+    //Colour the graph to check if it is bipartite
+    for(int i = 1; i <= n; i++){
+        if(col[i] == 1){
+            adj[0][i] = 1;
+        }
+        else{
+            adj[i][n+1] = 1;
+        }
     }
 
     // Applying ford fulkerson algorightm to get residual adjacency matrix.
@@ -50,14 +78,17 @@ int main()
     vector<pair<int, int>> max_matching;
 
     // Find the edges of the maximum matching by checking if the flow of the edge is 1
-    for (int i = 1; i <= bi_index; i++)
-    {
-        for (int j = bi_index + 1; j <= n; j++)
-        {
-            if (adj[i][j] && !res_adj[i][j])
+    for(int i = 1; i <= n; i++){
+        if(col[i] != 1)
+            continue;
+        
+        for(int j = 1; j < adj[i].size(); j++){
+            if(adj[i][j] == 1 && res_adj[i][j] == 0){
                 max_matching.push_back({i, j});
+            }
         }
     }
+
     // End of timer
     auto stopMatching = std::chrono::high_resolution_clock::now();
     auto matchingTime = std::chrono::duration_cast<std::chrono::microseconds>(stopMatching - startMatching);

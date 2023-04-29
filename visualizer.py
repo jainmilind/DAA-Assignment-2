@@ -49,12 +49,17 @@ with open('input_visualizer.txt') as f:
         y_coord_final.append(y_coord_2)
 ## matplotlib's objects
 fig, ax = plt.subplots()
-ax.set_facecolor('xkcd:grey')
-ax.set_xlim(minx - 10, maxx + 10)
-ax.set_ylim(miny - 10, maxy + 10)
-ax.spines['bottom'].set_position('zero')
-ax.spines['left'].set_position('zero')
+plt.xlim([minx - 5, maxx + 5])
+plt.ylim([miny - 5, maxy + 5])
+
+ax.set_facecolor('#ffff99')
+ax.grid(True, which='both')
+# ax.axhline(y=0, color='black', linewidth=.5)
+# ax.axvline(x=0, color='black', linewidth=.5)
+
+# ax.spines['bottom'].set_position('zero')
+# ax.spines['left'].set_position('zero')
 plt.plot(x_coord_final[0], y_coord_final[0],'o')
-for i in range(1,len(x_coord_final)):
+for i in range(1, len(x_coord_final)):
     plt.plot(x_coord_final[i], y_coord_final[i])
 plt.show()
