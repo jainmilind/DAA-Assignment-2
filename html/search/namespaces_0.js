@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['visualizer_0',['visualizer',['../namespacevisualizer.html',1,'']]]
+  ['point_5fgenerator_0',['point_generator',['../namespacepoint__generator.html',1,'']]]
 ];

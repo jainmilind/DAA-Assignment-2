@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['segmented_5fleast_5fsquares_2ecpp_0',['segmented_least_squares.cpp',['../segmented__least__squares_8cpp.html',1,'']]]
+  ['readme_2emd_0',['README.md',['../_r_e_a_d_m_e_8md.html',1,'']]]
 ];

@@ -75,13 +75,58 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 <div class="textblock"><code>#include &quot;<a class="el" href="_ford__fulkerson__max__flow_8cpp.html">Ford_fulkerson_max_flow.cpp</a>&quot;</code><br />
+<code>#include &lt;cstdlib&gt;</code><br />
 </div><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="func-members" name="func-members"></a>
 Functions</h2></td></tr>
+<tr class="memitem:a450852c23d7bfee8df88e942c22290de"><td class="memItemLeft" align="right" valign="top">void&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="max__bipartite__matching_8cpp.html#a450852c23d7bfee8df88e942c22290de">graph_2_col</a> (int u, vector&lt; vector&lt; int &gt; &gt; &amp;adj, vector&lt; int &gt; &amp;col)</td></tr>
+<tr class="separator:a450852c23d7bfee8df88e942c22290de"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="max__bipartite__matching_8cpp.html#ae66f6b31b5ad750f1fe042a706a4e3d4">main</a> ()</td></tr>
 <tr class="separator:ae66f6b31b5ad750f1fe042a706a4e3d4"><td class="memSeparator" colspan="2">&#160;</td></tr>
 </table>
 <h2 class="groupheader">Function Documentation</h2>
+<a id="a450852c23d7bfee8df88e942c22290de" name="a450852c23d7bfee8df88e942c22290de"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a450852c23d7bfee8df88e942c22290de">&#9670;&#160;</a></span>graph_2_col()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">void graph_2_col </td>
+          <td>(</td>
+          <td class="paramtype">int&#160;</td>
+          <td class="paramname"><em>u</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; vector&lt; int &gt; &gt; &amp;&#160;</td>
+          <td class="paramname"><em>adj</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">vector&lt; int &gt; &amp;&#160;</td>
+          <td class="paramname"><em>col</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>Checks if the graph is bipartite, if it is it makes it directed </p><dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">u</td><td>Current node being coloured. </td></tr>
+    <tr><td class="paramname">adj</td><td>This is the adjacency matrix that is modified to make the undirected bi-partite graph directed. </td></tr>
+    <tr><td class="paramname">col</td><td>The colour of each vertex of the bi-partite graph </td></tr>
+  </table>
+  </dd>
+</dl>
+
+</div>
+</div>
 <a id="ae66f6b31b5ad750f1fe042a706a4e3d4" name="ae66f6b31b5ad750f1fe042a706a4e3d4"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae66f6b31b5ad750f1fe042a706a4e3d4">&#9670;&#160;</a></span>main()</h2>
 

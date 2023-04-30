@@ -3,7 +3,12 @@
 
 using namespace std;
 
-// Checks if the graph is bipartite, if it is it removes the 
+/**
+ * Checks if the graph is bipartite, if it is it makes it directed
+ * @param u Current node being coloured.
+ * @param adj This is the adjacency matrix that is modified to make the undirected bi-partite graph directed.
+ * @param col The colour of each vertex of the bi-partite graph
+ */
 void graph_2_col(int u, vector<vector<int>>& adj, vector<int>& col){
 
     for(int v = 1; v < adj[u].size(); v++){
