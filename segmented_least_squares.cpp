@@ -84,28 +84,9 @@ int main()
             int64_t num = seg_len * range_xy - range_x * range_y;
             int64_t den = seg_len * range_xx - range_x * range_x;
             // Calculating the slope and the intecept
-            // if (den == 0)
-            // {
-            //     slope[i][j] = inf;
-            //     intercept[i][j] = -(double)range_x / (double)seg_len;
-            // }
-            // else
-            // {
                 slope[i][j] = (double)num / (double)den;
                 intercept[i][j] = (double)(range_y - slope[i][j] * range_x) / (double)seg_len;
-            // }
 
-            // for (int k = i; k <= j; ++k)
-            // {
-            //     double x = points[k][0];
-            //     double y = points[k][1];
-            //     double coef_x = slope[i][j] == inf ? 1 : slope[i][j];
-            //     double coef_y = slope[i][j] == inf ? 0 : -1;
-            //     double c = intercept[i][j];
-            //     double cur_error = -coef_y * y + coef_x * x + c;
-            //     e[i][j] += cur_error * cur_error;
-            // }
-            
             // Adding errors for all points [i, j] for given line in e[i][j]
             for (int k = i; k <= j; ++k) {
                 // Error = y - mx - c

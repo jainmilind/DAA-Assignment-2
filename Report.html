@@ -14703,8 +14703,8 @@ td, th {
 <p><a name="Segmented-Least-Squares"></a></p>
 <h3 id="Segmented-Least-Squares">Segmented Least Squares<a class="anchor-link" href="#Segmented-Least-Squares">&#182;</a></h3><p>The segmented least squares problem can be solved with dynamic programming.
 First we calculate errors between each pair of points e(i,j) using the formula :</p>
-$$ e*{ij} : \sum*{i}^{n} {(y_i \, – \, ax_i \, – \, b^2)}^2 $$$$ a : \frac{\sum*{i}^{n} {x_i\,y_i} - (\sum*{i} {x*i})(\sum*{i=1} {y*i})}{\sum*{i}^{n} {x*i^2}-(\sum*{i} {x_i})^2}$$$$ b : \frac{\sum*{i} {y_i} - a\sum*{i} {x_i}}{n} $$<p>Let $OPT_j$ denote the minimum cost for points $p_1, p_2,\dots, p_j$. Let $e_{ij}$ denote the minimum squared error for points $p_i, p_{i+1},\dots, p_j$. The crucial observation is that the last point $p_j$ for some subproblem $OPT_j$ belongs to a single segment in the optimal partition, and that segment begins at some earlier point pi. Thus, if we knew $OPT_{i-1}$, we could compute $OPT_j$. This leads to the following recursive formulation:
-$$ OPT*j = min*{1 \le i \le j}(e*{ij} + C + OPT*{i-1}) $$
+$$ e_{ij} : \sum_{i}^{n} {(y_i \, – \, ax_i \, – \, b^2)}^2 $$$$ a : \frac{\sum_{i}^{n} {x_i\,y_i} - (\sum_{i} {x_i})(\sum_{i=1} {y_i})}{\sum_{i}^{n} {x_i^2}-(\sum_{i} {x_i})^2}$$$$ b : \frac{\sum_{i} {y_i} - a\sum_{i} {x_i}}{n} $$<p>Let $OPT_j$ denote the minimum cost for points $p_1, p_2,\dots, p_j$. Let $e_{ij}$ denote the minimum squared error for points $p_i, p_{i+1},\dots, p_j$. The crucial observation is that the last point $p_j$ for some subproblem $OPT_j$ belongs to a single segment in the optimal partition, and that segment begins at some earlier point pi. Thus, if we knew $OPT_{i-1}$, we could compute $OPT_j$. This leads to the following recursive formulation:
+$$ OPT_j = min_{1 \le i \le j}(e_{ij} + C + OPT_{i-1}) $$
 Here $C$ is the penalty for each segement is taken as input <br>
 $OPT_n$ gives us the minimum penalty for all the $n$ points</p>
 
@@ -14730,8 +14730,8 @@ $OPT_n$ gives us the minimum penalty for all the $n$ points</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<pre><code>vector&lt;int&gt; get_path(int start, int end, vector&lt;vector&lt;int&gt;&gt; &amp;res_adj, int del)
-</code></pre>
+<div class="highlight"><pre><span></span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="n">get_path</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">start</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">end</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">res_adj</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="w"> </span><span class="n">del</span><span class="p">)</span>
+</pre></div>
 <p>Function to get a path with a source vertex, sink vertex using BFS such that every edge on the path has a weight greater than delta.
 <br>Time complexity is $O(N+M')$, where $N$ is number of vertices and $M'$ is number of edges in the residual graph.</p>
 
@@ -14745,8 +14745,8 @@ $OPT_n$ gives us the minimum penalty for all the $n$ points</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<pre><code>void augment(vector&lt;int&gt; &amp;f, vector&lt;int&gt; &amp;path, vector&lt;vector&lt;int&gt;&gt; &amp;res_adj, map&lt;array&lt;int, 2&gt;, int&gt; &amp;edg_to_i)
-</code></pre>
+<div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">augment</span><span class="p">(</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">f</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">path</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">res_adj</span><span class="p">,</span><span class="w"> </span><span class="n">map</span><span class="o">&lt;</span><span class="n">array</span><span class="o">&lt;</span><span class="kt">int</span><span class="p">,</span><span class="w"> </span><span class="mi">2</span><span class="o">&gt;</span><span class="p">,</span><span class="w"> </span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">edg_to_i</span><span class="p">)</span>
+</pre></div>
 <p>Function to update the adjacency matrix of the residual graph with the bottleneck of the path obtained. Such that the forward edge weight will be reduced by the bottleneck and the backward edge weight will be increased by the bottleneck.
 <br>Time complexity is $O(|P|)$, where $P$ is the path and $|P|$ is the length of the path.</p>
 
@@ -14760,8 +14760,8 @@ $OPT_n$ gives us the minimum penalty for all the $n$ points</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<pre><code>void reach_from_source(int u, vector&lt;bool&gt; &amp;vis, vector&lt;vector&lt;int&gt;&gt; &amp;res_adj)
-</code></pre>
+<div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">reach_from_source</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">bool</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">vis</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">res_adj</span><span class="p">)</span>
+</pre></div>
 <p>Function to get all the vertices that can be visited from source vertex. This is done by iterating through all the vertices that are not visited and if there is an edge between u and this vertex, recursively call this function to find all the points u can reach from this point.
 <br>Time complexity is $O(N+M')$, where $N$ is number of vertices and $M'$ is number of edges in the residual graph.</p>
 
@@ -14775,8 +14775,8 @@ $OPT_n$ gives us the minimum penalty for all the $n$ points</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<pre><code>void find_segment(int j, vector&lt;vector&lt;int&gt;&gt; &amp;segments, vector&lt;int&gt; &amp;best_seg)
-</code></pre>
+<div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">find_segment</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">j</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">segments</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;</span><span class="w"> </span><span class="o">&amp;</span><span class="n">best_seg</span><span class="p">)</span>
+</pre></div>
 <p>Function to recursively find the best set of segments
 <br>Time complexity is $O(N)$, where $N$ is number of points.</p>
 
@@ -14790,8 +14790,8 @@ $OPT_n$ gives us the minimum penalty for all the $n$ points</p>
 </div>
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
-<pre><code>void graph_2_col(int u, vector&lt;vector&lt;int&gt;&gt;&amp; adj, vector&lt;int&gt;&amp; col)
-</code></pre>
+<div class="highlight"><pre><span></span><span class="kt">void</span><span class="w"> </span><span class="n">graph_2_col</span><span class="p">(</span><span class="kt">int</span><span class="w"> </span><span class="n">u</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&gt;&amp;</span><span class="w"> </span><span class="n">adj</span><span class="p">,</span><span class="w"> </span><span class="n">vector</span><span class="o">&lt;</span><span class="kt">int</span><span class="o">&gt;&amp;</span><span class="w"> </span><span class="n">col</span><span class="p">)</span>
+</pre></div>
 <p>Function which checks if the graph is bipartite and if it is, makes it directed.
 <br>Time complexity is $O(N + E)$, where $N$ is number of nodes and $E$ is number of edges.</p>
 
